@@ -1,0 +1,27 @@
+<h1>Counter</h1>
+
+<p>This is a simple example of an Angular component.</p>
+
+<p aria-live="polite">Current count: <strong>{{ currentCount }}</strong></p>
+
+<button class="btn btn-primary" (click)="incrementCounter()">Increment</button>
+<br />
+<button class="btn btn-primary" (click)="testA()">Run test code A</button>
+<button class="btn btn-primary" (click)="testB()">Get Posts</button>
+<br />
+<br />
+<!-- Be careful, to test for an unassigned array in C#, we would typically do loadedPosts = null -->
+<!-- But in typescript we cannot initialize an array to null, we initialize it to an empty array instead []-->
+<!-- So we must check the array length-->
+<h2 *ngIf="loadedPosts.length != 0">Data Received</h2>
+<app-display-post *ngFor="let currLoadedPost of loadedPosts"
+                  [userId]=currLoadedPost.userId
+                  [id]=currLoadedPost.id
+                  [title]=currLoadedPost.title
+                  [body]=currLoadedPost.body>
+</app-display-post>
+<!--   @Input() public userId: number = 0;
+  @Input() public id: string = "";
+  @Input() public title: string = "";
+  @Input() public body: string = "";
+-->
