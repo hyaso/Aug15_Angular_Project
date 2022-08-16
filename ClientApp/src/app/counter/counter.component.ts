@@ -37,15 +37,18 @@ export class CounterComponent {
     console.log("This line should log immediately after Test A was called");
   }
 
-  public testB()
-  {
-    // The order is important here. If we subscribe First, we can guarantee we will receeive
-    // all data provided by the event.
-    console.log("Test B was called");
-    this.thisPostService.newPostsAvailableEvent.subscribe((gotData) => {
-      this.loadedPosts = gotData;
-      console.log("Data arrived!  We got " + gotData.length.toString() + " records.");
-    })
+  private isNewPostsAvailableEventSubscribed: boolean = false;
+  public testB() {
+    // The order is important here.  If we subscribe FIRST, we can guarantee we will receive
+    // all data provided by the event.  If we subscribe SECOND, we may not.
+    if (!this.isNewPostsAvailableEventSubscribed) {
+      this.thisPostService.newPostsAvailableEvent.subscribe((gotData) => {
+        for (let currElementNo = 0; currElementNo < gotData.length; currElementNo++)
+          this.loadedPosts.push(gotData[currElementNo]);
+        console.log("Data arrived!  We got " + gotData.length.toString() + " records.");
+      })
+      this.isNewPostsAvailableEventSubscribed = true;
+    }
     this.thisPostService.GetInfoFromServer();
   }
 }
